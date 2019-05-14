@@ -1,4 +1,5 @@
 import {StorageFormat} from "./types";
+import {URIGenerator} from "./URIGenerator";
 
 chrome.contextMenus.create(
     {
@@ -19,11 +20,13 @@ chrome.contextMenus.create(
                 }
             };
             chrome.storage.local.get(storageFormat, (data) => {
-                // ここで取得したマウス座標を活用（URIジェネレータへ引き渡し）
                 console.log("==========[Storage]========");
                 console.log(data.clickedInfo.clickedX);
                 console.log(data.clickedInfo.clickedY);
                 console.log(data.clickedInfo.currentURI);
+
+                // ここで取得したマウス座標を活用（URIジェネレータへ引き渡し）
+                // const generator = new URIGenerator(data.clickedInfo);
             });
             chrome.storage.local.remove("clickedInfo");
         }
