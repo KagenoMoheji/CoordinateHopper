@@ -24,7 +24,9 @@ interface Request {
     type: string;
 }
 chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) => {
-    if (request.type === "popupMounted") {
-        console.log("eventPage notified that Popup.tsx has mounted.");
+    switch (request.type){
+        case "popupMounted":
+            console.log("eventPage notified that Popup.tsx has mounted.");
+            break;
     }
 });

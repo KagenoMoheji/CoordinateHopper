@@ -32,3 +32,16 @@ chrome.contextMenus.create(
         }
     }
 );
+
+
+interface Request {
+    type: string;
+    input: string;
+}
+chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) => {
+    switch (request.type){
+        case "uriInputted":
+            console.log("Input: " + request.input);
+            break;
+    }
+});
