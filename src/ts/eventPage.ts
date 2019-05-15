@@ -20,6 +20,7 @@ document.addEventListener("contextmenu", (eve: MouseEvent) => {
 });
 
 
+// chrome.tabs.queryを受け取る
 interface Request {
     type: string;
     message?: string;

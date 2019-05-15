@@ -44,6 +44,7 @@ chrome.contextMenus.create(
 );
 
 
+// chrome.runtime.sendMessageを受け取る
 interface Request {
     type: string;
     input?: string;
