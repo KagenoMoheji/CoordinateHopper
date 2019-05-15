@@ -1,7 +1,7 @@
 import {StorageFormat} from "./types";
 
 
-document.addEventListener("contextmenu", (eve: MouseEvent) => {
+document.addEventListener("contextmenu", async (eve: MouseEvent) => {
     let storageFormat: StorageFormat = {
         clickedInfo: {
             clickedX: 0,
@@ -16,17 +16,23 @@ document.addEventListener("contextmenu", (eve: MouseEvent) => {
     let uri: string = location.href,
         hash: string = location.hash;
     storageFormat.clickedInfo!.currentURI = (uri.indexOf(hash) === -1) ? uri : uri.replace(hash, "");
-    chrome.storage.local.set(storageFormat);
+    await chrome.storage.local.set(storageFormat!);
 });
 
 
 interface Request {
     type: string;
+    message?: string;
 }
 chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) => {
     switch (request.type){
         case "popupMounted":
             console.log("eventPage notified that Popup.tsx has mounted.");
+            break;
+        case "alert":
+            alert(request.message);
+            break;
+        default:
             break;
     }
 });

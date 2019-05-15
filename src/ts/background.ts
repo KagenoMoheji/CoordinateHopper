@@ -1,4 +1,5 @@
 import {StorageFormat} from "./types";
+import {AlertChromeTabsQuery} from "./commons";
 import {URIGenerator} from "./URIGenerator";
 
 chrome.contextMenus.create(
@@ -6,7 +7,7 @@ chrome.contextMenus.create(
         title: "Generate Link of Here",
         id: "CEFIwC",
         contexts: ["all"],
-        onclick: info => {
+        onclick: async (info) => {
             console.log(info);
 
             let uri: string = location.href;
@@ -19,16 +20,24 @@ chrome.contextMenus.create(
                     currentURI: ""
                 }
             };
-            chrome.storage.local.get(storageFormat, (data) => {
+            await chrome.storage.local.get(storageFormat, (data) => {
                 console.log("==========[Storage]========");
                 console.log(data.clickedInfo.clickedX);
                 console.log(data.clickedInfo.clickedY);
                 console.log(data.clickedInfo.currentURI);
 
-                // ここで取得したマウス座標を活用（URIジェネレータへ引き渡し）
-                // const generator = new URIGenerator(data.clickedInfo);
+                if (
+                    data.clickedInfo.clickedX === 0
+                    && data.clickedInfo.clickedY === 0
+                    && !data.clickedInfo.currentURI
+                ) {
+                    AlertChromeTabsQuery('Failed to get coordinate.\nRetry after reloading web page.');
+                } else {
+                    // ここで取得したマウス座標を活用（URIジェネレータへ引き渡し）
+                    // const generator = new URIGenerator(data.clickedInfo);
+                }
             });
-            chrome.storage.local.remove("clickedInfo");
+            await chrome.storage.local.remove("clickedInfo");
         }
     }
 );
@@ -41,7 +50,13 @@ interface Request {
 chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) => {
     switch (request.type){
         case "uriInputted":
-            console.log("Input: " + request.input);
+            // console.log("Input: " + request.input);
+            if (!request.input.match(/(http|ftp):\/\/.+/)) {
+                AlertChromeTabsQuery('Invalid input.\nInput URI "(http|https|ftp)://~".');
+                return;
+            }
+            break;
+        default:
             break;
     }
 });

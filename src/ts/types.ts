@@ -10,3 +10,5 @@ export interface StorageFormat {
     clickedInfo?: ClickedInfo;
     cacheData?: CacheData;
 }
+
+

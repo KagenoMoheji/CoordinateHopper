@@ -27,7 +27,7 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
         // リダイレクト完了を検出したら
         // ハッシュの位置までスクロール
         let elm = document.getElementById("searchForm");
-        if(elm) {
+        if (elm) {
             chrome.runtime.sendMessage(
                 {type: "uriInputted", input: elm.getAttribute("value")}
             );
