@@ -10,22 +10,33 @@
 //     );
 // }
 
-export function AlertChromeTabsQuery(message: string) {
+export function BG2EventChromeTabsQuery(type: string, key: string, val: string) {
     chrome.tabs.query(
         {
             active: true,
             currentWindow: true
         },
-        tabs => {
+        (tabs) => {
             if (tabs[0].id) {
                 chrome.tabs.sendMessage(
                     tabs[0].id,
                     {
-                        type: "alert",
-                        message: message
+                        type: type,
+                        [key]: val
                     }
                 );
             }
+        }
+    );
+}
+
+// background.ts内で使うとダメで普通にalert使う．
+// eventPage→backgroundまたはTSX→backgroundのときに使う．
+export function ChromeRuntimeSendMS2BG(type: string, key: string, val: string) {
+    chrome.runtime.sendMessage(
+        {
+            type: type,
+            [key]: val
         }
     );
 }

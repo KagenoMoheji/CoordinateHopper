@@ -1,6 +1,6 @@
 import * as React from "react";
 import "./../styles/Popup.css";
-
+import {ChromeRuntimeSendMS2BG} from "./../ts/commons";
 
 
 interface SearchFormProps {}
@@ -26,11 +26,19 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
         // リダイレクトして
         // リダイレクト完了を検出したら
         // ハッシュの位置までスクロール
-        let elm = document.getElementById("searchForm");
+        let elm: HTMLElement | null = document.getElementById("searchForm");
         if (elm) {
-            chrome.runtime.sendMessage(
-                {type: "uriInputted", input: elm.getAttribute("value")}
-            );
+            let val: string | null = elm.getAttribute("value");
+            if (val) {
+                // chrome.runtime.sendMessage(
+                //     {type: "uriInputted", input: val}
+                // );
+                ChromeRuntimeSendMS2BG(
+                    "uriInputted",
+                    "input",
+                    val
+                );
+            }
         }
     }
 

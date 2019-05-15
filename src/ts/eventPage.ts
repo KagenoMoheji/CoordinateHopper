@@ -1,7 +1,7 @@
 import {StorageFormat} from "./types";
+import {ChromeRuntimeSendMS2BG} from "./commons";
 
-
-document.addEventListener("contextmenu", async (eve: MouseEvent) => {
+document.addEventListener("contextmenu", (eve: MouseEvent) => {
     let storageFormat: StorageFormat = {
         clickedInfo: {
             clickedX: 0,
@@ -16,21 +16,40 @@ document.addEventListener("contextmenu", async (eve: MouseEvent) => {
     let uri: string = location.href,
         hash: string = location.hash;
     storageFormat.clickedInfo!.currentURI = (uri.indexOf(hash) === -1) ? uri : uri.replace(hash, "");
-    await chrome.storage.local.set(storageFormat!);
+    chrome.storage.local.set(storageFormat!);
 });
 
 
 interface Request {
     type: string;
     message?: string;
+    uri?: string;
 }
 chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) => {
-    switch (request.type){
+    switch (request.type) {
         case "popupMounted":
             console.log("eventPage notified that Popup.tsx has mounted.");
+            ChromeRuntimeSendMS2BG(
+                "alertBG",
+                "message",
+                "Hello!"
+            );
             break;
-        case "alert":
-            alert(request.message);
+        // case "alert":
+        //     if (request.message) {
+        //         alert(request.message);
+        //     }
+        //     break;
+        case "redirect":
+            if (request.uri) {
+                location.href = request.uri;
+            } else {
+                ChromeRuntimeSendMS2BG(
+                    "alertBG",
+                    "message",
+                    "Error: Empty URI."
+                );
+            }
             break;
         default:
             break;

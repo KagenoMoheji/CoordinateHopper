@@ -7,7 +7,7 @@ chrome.tabs.query(
         active: true,
         currentWindow: true
     },
-    tabs => {
+    (tabs) => {
         ReactDOM.render(
             <Popup tabs={tabs} />,
             document.getElementById("popup")
