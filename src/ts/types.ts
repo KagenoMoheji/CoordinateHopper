@@ -12,3 +12,5 @@ export interface StorageFormat {
 }
 
 
+// キーボード
+export const ENTER: number = 13;

@@ -1,6 +1,7 @@
 import * as React from "react";
 import "./../styles/Popup.css";
 import {ChromeRuntimeSendMS2BG} from "./../ts/commons";
+import {ENTER} from "./../ts/types";
 
 
 interface SearchFormProps {}
@@ -18,6 +19,12 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
 
     handleChange(eve: React.ChangeEvent<HTMLInputElement>) {
         this.setState({uriValue: eve.target.value});
+    }
+    handleCommand(eve: React.KeyboardEvent<HTMLInputElement>) {
+        if (eve.keyCode === ENTER) {
+            // ボタンクリックと同じ処理をさせる
+            this.handleClick();
+        }
     }
 
     handleClick() {
@@ -52,6 +59,7 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
                     value={this.state.uriValue}
                     placeholder="Input URI and click Go"
                     onChange={(eve) => {this.handleChange(eve); }}
+                    onKeyDown={(eve) => {this.handleCommand(eve) }}
                 ></input>
                 <button
                     onClick={() => {this.handleClick(); }}
