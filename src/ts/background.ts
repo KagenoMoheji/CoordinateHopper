@@ -1,4 +1,4 @@
-import {StorageFormat} from "./types";
+import {StorageFormat, InitStorageFormat} from "./types";
 import {BG2EventChromeTabsQuery} from "./commons";
 import {URIGenerator} from "./URIGenerator";
 
@@ -13,18 +13,12 @@ chrome.contextMenus.create(
             let uri: string = location.href;
             console.log(uri);
 
-            let storageFormat: StorageFormat = {
-                clickedInfo: {
-                    clickedX: 0,
-                    clickedY: 0,
-                    currentURI: ""
-                }
-            };
+            let storageFormat: StorageFormat = InitStorageFormat;
             await chrome.storage.local.get(storageFormat, (data) => {
-                console.log("==========[Storage]========");
-                console.log(data.clickedInfo.clickedX);
-                console.log(data.clickedInfo.clickedY);
-                console.log(data.clickedInfo.currentURI);
+                console.log("==========[BeforeGenerate]========");
+                console.log("clickedX: " + data.clickedInfo.clickedX);
+                console.log("clickedY: " + data.clickedInfo.clickedY);
+                console.log("currentURI: " + data.clickedInfo.currentURI);
 
                 if (
                     data.clickedInfo.clickedX === 0
@@ -50,7 +44,7 @@ interface Request {
     input?: string;
     message?: string;
 }
-chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (request: Request, sender, sendResponse) => {
     switch (request.type) {
         case "uriInputted":
             if (request.input) {
@@ -58,6 +52,25 @@ chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) =>
                     alert('Invalid input.\nInput URI "(http|https|ftp)://~".');
                     return;
                 }
+
+                // 本アプリによるリダイレクトであるフラグを立てる
+                let storageFormat: StorageFormat = InitStorageFormat;
+                await chrome.storage.local.get(storageFormat, async (data) => {
+                    console.log("==========[BeforeRedirect]========");
+                    console.log("runRedirect: " + data.hopperInfo.runRedirect);
+
+                    if (!data.hopperInfo.runRedirect) {
+                        // runRedirectのみ更新
+                        storageFormat = {
+                            ...data.clickedInfo,
+                            hopperInfo: {
+                                runRedirect: true
+                            }
+                        };
+                        await chrome.storage.local.set(storageFormat);
+                    }
+                });
+
                 BG2EventChromeTabsQuery(
                     "redirect",
                     "uri",
