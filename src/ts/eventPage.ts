@@ -65,10 +65,8 @@ window.addEventListener(
                 if (data.hopperInfo.runRedirect) { // 本アプリからのリダイレクトであるフラグが立っていたら
                     // リンク解析
                     let scrollData: ScrollInfo = hopper.getCoodinate();
-
                     // スクロール処理を実行
                     hopper.scroll(scrollData);
-
                     // マーカーの描写
                     // hopper.drawMarker(scrollData);
 
