@@ -1,4 +1,6 @@
-import {StorageFormat, InitStorageFormat} from "./types";
+import {
+    StorageFormat, InitClickedInfo, InitHopperInfo
+} from "./types";
 import {BG2EventChromeTabsQuery} from "./commons";
 import {URIGenerator} from "./URIGenerator";
 
@@ -13,7 +15,7 @@ chrome.contextMenus.create(
             let uri: string = location.href;
             console.log(uri);
 
-            let storageFormat: StorageFormat = InitStorageFormat;
+            let storageFormat: StorageFormat = InitClickedInfo;
             await chrome.storage.local.get(storageFormat, (data) => {
                 console.log("==========[BeforeGenerate]========");
                 console.log("clickedX: " + data.clickedInfo.clickedX);
@@ -32,7 +34,7 @@ chrome.contextMenus.create(
                     alert("yes!");
                 }
             });
-            await chrome.storage.local.remove("clickedInfo");
+            await chrome.storage.local.remove(["clickedInfo"]);
         }
     }
 );
@@ -54,7 +56,7 @@ chrome.runtime.onMessage.addListener(async (request: Request, sender, sendRespon
                 }
 
                 // 本アプリによるリダイレクトであるフラグを立てる
-                let storageFormat: StorageFormat = InitStorageFormat;
+                let storageFormat: StorageFormat = InitHopperInfo;
                 await chrome.storage.local.get(storageFormat, async (data) => {
                     console.log("==========[BeforeRedirect]========");
                     console.log("runRedirect: " + data.hopperInfo.runRedirect);
@@ -62,10 +64,8 @@ chrome.runtime.onMessage.addListener(async (request: Request, sender, sendRespon
                     if (!data.hopperInfo.runRedirect) {
                         // onLoadedとrunRedirectのみ更新
                         storageFormat = {
-                            ...data.clickedInfo,
                             hopperInfo: {
-                                onLoaded: true, // リダイレクト前にフラグ立て
-                                runRedirect: true
+                                runRedirect: true // リダイレクト前にフラグ立て
                             }
                         };
                         await chrome.storage.local.set(storageFormat);

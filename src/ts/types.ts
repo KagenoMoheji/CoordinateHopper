@@ -4,21 +4,34 @@ export interface ClickedInfo {
     currentURI: string;
 }
 export interface HopperData {
-    onLoaded: boolean;
+    // frameやimgとかがあるたびにリダイレクト後の
+    // window.addEventListener("load")が複数回
+    // 呼び出されてしまうのでその防止
     runRedirect: boolean;
 }
 export interface StorageFormat {
-    clickedInfo: ClickedInfo;
-    hopperInfo: HopperData;
+    clickedInfo?: ClickedInfo;
+    hopperInfo?: HopperData;
 }
-export const InitStorageFormat: StorageFormat = {
+// export const InitStorageFormat: StorageFormat = {
+//     clickedInfo: {
+//         clickedX: 0,
+//         clickedY: 0,
+//         currentURI: ""
+//     },
+//     hopperInfo: {
+//         runRedirect: false
+//     }
+// };
+export const InitClickedInfo = {
     clickedInfo: {
         clickedX: 0,
         clickedY: 0,
         currentURI: ""
-    },
+    }
+};
+export const InitHopperInfo = {
     hopperInfo: {
-        onLoaded: false, // 複数回コールバックされることがあるので，１回実行のためのフラグ
         runRedirect: false
     }
 };

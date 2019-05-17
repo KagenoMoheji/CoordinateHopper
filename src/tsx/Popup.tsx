@@ -31,8 +31,8 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
         // 入力された値を取得して |実装済み
         // リンクかを判定して |実装済み
         // リダイレクトして |実装済み
-        // リダイレクト完了を検出したら
-        // ハッシュの位置までスクロールして
+        // リダイレクト完了を検出したら |実装済み
+        // ハッシュの位置までスクロールして |実装済み
         // heightの位置一帯に横帯(または十字)の黄色マーカーみたいなのをフェードイン・フェードアウトさせる
         let elm: HTMLElement | null = document.getElementById("searchForm");
         if (elm) {
