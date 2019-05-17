@@ -4,6 +4,7 @@ export interface ClickedInfo {
     currentURI: string;
 }
 export interface HopperData {
+    onLoaded: boolean;
     runRedirect: boolean;
 }
 export interface StorageFormat {
@@ -17,6 +18,7 @@ export const InitStorageFormat: StorageFormat = {
         currentURI: ""
     },
     hopperInfo: {
+        onLoaded: false, // 複数回コールバックされることがあるので，１回実行のためのフラグ
         runRedirect: false
     }
 };

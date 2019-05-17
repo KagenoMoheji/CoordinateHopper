@@ -60,10 +60,11 @@ chrome.runtime.onMessage.addListener(async (request: Request, sender, sendRespon
                     console.log("runRedirect: " + data.hopperInfo.runRedirect);
 
                     if (!data.hopperInfo.runRedirect) {
-                        // runRedirectのみ更新
+                        // onLoadedとrunRedirectのみ更新
                         storageFormat = {
                             ...data.clickedInfo,
                             hopperInfo: {
+                                onLoaded: true, // リダイレクト前にフラグ立て
                                 runRedirect: true
                             }
                         };

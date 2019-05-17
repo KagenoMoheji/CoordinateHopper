@@ -59,15 +59,38 @@ window.addEventListener(
     "load",
     async () => {
         // ロードが完全に完了したら
-
-
         let storageFormat: StorageFormat = InitStorageFormat;
         await chrome.storage.local.get(storageFormat, async (data) => {
-            console.log("==========[Loaded]========");
-            console.log("runRedirect: " + data.hopperInfo.runRedirect);
+            if (data.hopperInfo.onLoaded) {
+                if (data.hopperInfo.runRedirect) { // 本アプリからのリダイレクトであるフラグが立っていたら
+                    // スクロール処理を実行
 
-            if (data.hopperInfo.runRedirect) { // 本アプリからのリダイレクトであるフラグが立っていたら
-                // スクロール処理を実行
+
+
+
+
+                    
+
+                    // onLoadedとrunRedirectのフラグを閉じる
+                    storageFormat = {
+                        ...data.clickedInfo,
+                        hopperInfo: {
+                            onLoaded: false,
+                            runRedirect: false
+                        }
+                    };
+                } else {
+                    // onLoadedのみのフラグを閉じる
+                    storageFormat = {
+                        ...data.clickedInfo,
+                        hopperInfo: {
+                            onLoaded: false,
+                            runRedirect: data.hopperInfo.runRedirect
+                        }
+                    };
+                }
+
+                await chrome.storage.local.set(storageFormat);
             }
         });
     },
