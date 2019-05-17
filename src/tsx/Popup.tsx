@@ -59,7 +59,7 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
                     value={this.state.uriValue}
                     placeholder="Input URI and click Go"
                     onChange={(eve) => {this.handleChange(eve); }}
-                    onKeyDown={(eve) => {this.handleCommand(eve) }}
+                    onKeyDown={(eve) => {this.handleCommand(eve); }}
                 ></input>
                 <button
                     onClick={() => {this.handleClick(); }}

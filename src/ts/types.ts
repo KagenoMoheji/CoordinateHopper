@@ -36,6 +36,11 @@ export const InitHopperInfo = {
     }
 };
 
+export interface ScrollInfo {
+    width?: number;
+    height?: number;
+}
+
 
 // キーボード
 export const ENTER: number = 13;

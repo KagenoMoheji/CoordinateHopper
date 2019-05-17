@@ -1,7 +1,9 @@
 import {
-    StorageFormat, InitClickedInfo, InitHopperInfo
+    StorageFormat, InitClickedInfo, InitHopperInfo,
+    ScrollInfo
 } from "./types";
 import {ChromeRuntimeSendMS2BG} from "./commons";
+import { SearchHopper } from "./SearchHopper";
 
 // コンテキストメニューのアクションを監視
 document.addEventListener("contextmenu", (eve: MouseEvent) => {
@@ -55,49 +57,20 @@ window.addEventListener(
     "load",
     async () => {
         let hash: string = location.hash;
-        if ((hash).match(/\[width=([0-9]+)/) || (hash).match(/\[height=([0-9]+)/)){ // 複数回呼び出される内に開いているサイトのURIがあるので，それが見つかったら
+        if ((hash).match(/\[width=([0-9]+)/) || (hash).match(/\[height=([0-9]+)/)) { // 複数回呼び出される内に開いているサイトのURIがあるので，それが見つかったら
+            const hopper = new SearchHopper(hash);
+
             let storageFormat: StorageFormat = InitHopperInfo;
             await chrome.storage.local.get(storageFormat, async (data) => {
                 if (data.hopperInfo.runRedirect) { // 本アプリからのリダイレクトであるフラグが立っていたら
                     // リンク解析
-                    let scrollData: {width?: number; height?: number} = {};
-                    switch (true) {
-                        case /\[width=([0-9]+)&&height=([0-9]+)\]/.test(hash):
-                        case /\[height=([0-9]+)&&width=([0-9]+)\]/.test(hash):
-                            let splittedHash: string[] = hash.split("&&");
-                            if (splittedHash[0].match(/width/)) {
-                                scrollData = {
-                                    width: parseInt(splittedHash[0].replace(/[^0-9]/g, ""), 10),
-                                    height: parseInt(splittedHash[1].replace(/[^0-9]/g, ""), 10)
-                                };
-                            } else {
-                                scrollData = {
-                                    width: parseInt(splittedHash[1].replace(/[^0-9]/g, ""), 10),
-                                    height: parseInt(splittedHash[0].replace(/[^0-9]/g, ""), 10)
-                                };
-                            }
-                            break;
-                        case /\[height=([0-9]+)\]/.test(hash):
-                            scrollData.height = parseInt(hash.replace(/[^0-9]/g, ""), 10);
-                            break;
-                        case /\[width=([0-9]+)\]/.test(hash):
-                            scrollData.width = parseInt(hash.replace(/[^0-9]/g, ""), 10);
-                            break;
-                        default:
-                            break;
-                    }
+                    let scrollData: ScrollInfo = hopper.getCoodinate();
 
                     // スクロール処理を実行
-                    window.scrollTo(0, scrollData.height!);
+                    hopper.scroll(scrollData);
+
                     // マーカーの描写
-                    // switch (Object.keys(scrollData).length) {
-                    //     case 2:
-                    //         // 縦横十字
-                    //     case 1:
-                    //         // 横だけ
-                    //     default:
-                    //         break;
-                    // }
+                    // hopper.drawMarker(scrollData);
 
                     // リダイレクト終了にストレージクリア→複数回呼び出し防止
                     await chrome.storage.local.remove(["hopperInfo"]);
