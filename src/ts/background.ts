@@ -10,28 +10,21 @@ chrome.contextMenus.create(
         id: "CEFIwC",
         contexts: ["all"],
         onclick: async (info) => {
-            console.log(info);
-
-            let uri: string = location.href;
-            console.log(uri);
-
             let storageFormat: StorageFormat = InitClickedInfo;
             await chrome.storage.local.get(storageFormat, (data) => {
-                console.log("==========[BeforeGenerate]========");
-                console.log("clickedX: " + data.clickedInfo.clickedX);
-                console.log("clickedY: " + data.clickedInfo.clickedY);
-                console.log("currentURI: " + data.clickedInfo.currentURI);
+                console.log(`(x, y): (${data.clickedInfo.clickedX}, ${data.clickedInfo.clickedY})`);
+                console.log(`currentURI: ${data.clickedInfo.currentURI}`);
 
                 if (
                     data.clickedInfo.clickedX === 0
                     && data.clickedInfo.clickedY === 0
                     && !data.clickedInfo.currentURI
                 ) {
-                    alert('Failed to get coordinate.\nRetry after reloading web page.');
+                    alert('Failed in getting coordinate.\nTry again after reloading web page.');
                 } else {
-                    // ここで取得したマウス座標を活用（URIジェネレータへ引き渡し）
-                    // const generator = new URIGenerator(data.clickedInfo);
-                    alert("yes!");
+                    // Popup.tsxに生成したURIを渡す
+                    const generator = new URIGenerator(data.clickedInfo);
+                    generator.setNewURI();
                 }
             });
             await chrome.storage.local.remove(["clickedInfo"]);
@@ -58,9 +51,6 @@ chrome.runtime.onMessage.addListener(async (request: Request, sender, sendRespon
                 // 本アプリによるリダイレクトであるフラグを立てる
                 let storageFormat: StorageFormat = InitHopperInfo;
                 await chrome.storage.local.get(storageFormat, async (data) => {
-                    console.log("==========[BeforeRedirect]========");
-                    console.log("runRedirect: " + data.hopperInfo.runRedirect);
-
                     if (!data.hopperInfo.runRedirect) {
                         // onLoadedとrunRedirectのみ更新
                         storageFormat = {

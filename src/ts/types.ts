@@ -9,9 +9,13 @@ export interface HopperData {
     // 呼び出されてしまうのでその防止
     runRedirect: boolean;
 }
+export interface CachedURI {
+    generatedURI: string;
+}
 export interface StorageFormat {
     clickedInfo?: ClickedInfo;
     hopperInfo?: HopperData;
+    cachedURI?: CachedURI;
 }
 // export const InitStorageFormat: StorageFormat = {
 //     clickedInfo: {
@@ -33,6 +37,11 @@ export const InitClickedInfo = {
 export const InitHopperInfo = {
     hopperInfo: {
         runRedirect: false
+    }
+};
+export const InitCachedURI = {
+    cachedURI: {
+        generatedURI: ""
     }
 };
 

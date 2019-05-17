@@ -1,8 +1,7 @@
 import * as React from "react";
 import "./../styles/Popup.css";
 import {ChromeRuntimeSendMS2BG} from "./../ts/commons";
-import {ENTER} from "./../ts/types";
-
+import {ENTER, StorageFormat, InitCachedURI} from "./../ts/types";
 
 interface SearchFormProps {}
 interface SearchFormState {
@@ -17,17 +16,17 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
         };
     }
 
-    handleChange(eve: React.ChangeEvent<HTMLInputElement>) {
+    handleChange(eve: React.ChangeEvent<HTMLInputElement>): void {
         this.setState({uriValue: eve.target.value});
     }
-    handleCommand(eve: React.KeyboardEvent<HTMLInputElement>) {
+    handleCommand(eve: React.KeyboardEvent<HTMLInputElement>): void {
         if (eve.keyCode === ENTER) {
             // ボタンクリックと同じ処理をさせる
             this.handleClick();
         }
     }
 
-    handleClick() {
+    handleClick(): void {
         // 入力された値を取得して |実装済み
         // リンクかを判定して |実装済み
         // リダイレクトして |実装済み
@@ -50,7 +49,7 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
         }
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="forms">
                 <input
@@ -72,20 +71,43 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
 }
 
 interface CopyURIFormProps {}
-interface CopyURIFormState {}
+interface CopyURIFormState {
+    newURI: string;
+}
 class CopyURIForm extends React.Component<CopyURIFormProps, CopyURIFormState> {
     constructor(props: CopyURIFormProps) {
         super(props);
+
+        this.state = {
+            newURI: ""
+        };
     }
 
-    handleClick() {
+    async componentDidMount(): Promise<void> {
+        // コンポーネント描写後に生成URIが無いか確認．あれば表示．
+        let storageFormat: StorageFormat = InitCachedURI;
+        await chrome.storage.local.get(storageFormat, async (data) => {
+            if (data.cachedURI) {
+                this.setState({newURI: data.cachedURI.generatedURI});
+                await chrome.storage.local.remove(["cachedURI"]);
+            }
+        });
+    }
+
+    handleClick(): void {
         // クリップボードコピー処理
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="forms">
-                <input type="text" id="copyForm" placeholder="Generated URI will display here" disabled></input>
+                <input
+                    type="text"
+                    id="copyForm"
+                    value={this.state.newURI}
+                    placeholder="Generated URI will display here"
+                    readOnly
+                ></input>
                 <button onClick={() => {this.handleClick(); }}>Copy</button>
             </div>
         );
@@ -101,7 +123,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
         super(props);
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         if (this.props.tabs[0].id) {
             chrome.tabs.sendMessage(
                 this.props.tabs[0].id,
@@ -110,7 +132,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
         }
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="popupContainer">
                 <SearchForm />

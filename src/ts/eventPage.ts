@@ -8,14 +8,13 @@ import { SearchHopper } from "./SearchHopper";
 // コンテキストメニューのアクションを監視
 document.addEventListener("contextmenu", (eve: MouseEvent) => {
     let storageFormat: StorageFormat = InitClickedInfo;
-    // スクロール量も含めるためoffsetを使ってる
-    storageFormat.clickedInfo!.clickedX = eve.offsetX; // eve.clientX
-    storageFormat.clickedInfo!.clickedY = eve.offsetY; // eve.clientY
+    storageFormat.clickedInfo!.clickedX = eve.pageX; // .offsetX; // .clientX
+    storageFormat.clickedInfo!.clickedY = eve.pageY; // .offsetY; // .clientY
     // フラグメント識別子が既にあるなら除去したURIを格納
     let uri: string = location.href,
         hash: string = location.hash;
     storageFormat.clickedInfo!.currentURI = (uri.indexOf(hash) === -1) ? uri : uri.replace(hash, "");
-    chrome.storage.local.set(storageFormat);
+    chrome.storage.local.set(storageFormat!);
 });
 
 
@@ -57,7 +56,10 @@ window.addEventListener(
     "load",
     async () => {
         let hash: string = location.hash;
-        if ((hash).match(/\[width=([0-9]+)/) || (hash).match(/\[height=([0-9]+)/)) { // 複数回呼び出される内に開いているサイトのURIがあるので，それが見つかったら
+        if (
+            (hash).match(/\[width=([0-9]+)/)
+            || (hash).match(/\[height=([0-9]+)/)
+        ) { // 複数回呼び出される内に開いているサイトのURIがあるので，それが見つかったら
             const hopper = new SearchHopper(hash);
 
             let storageFormat: StorageFormat = InitHopperInfo;
