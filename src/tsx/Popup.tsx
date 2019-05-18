@@ -72,14 +72,14 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
 
 interface CopyURIFormProps {}
 interface CopyURIFormState {
-    newURI: string;
+    uriValue: string;
 }
 class CopyURIForm extends React.Component<CopyURIFormProps, CopyURIFormState> {
     constructor(props: CopyURIFormProps) {
         super(props);
 
         this.state = {
-            newURI: ""
+            uriValue: ""
         };
     }
 
@@ -88,7 +88,7 @@ class CopyURIForm extends React.Component<CopyURIFormProps, CopyURIFormState> {
         let storageFormat: StorageFormat = InitCachedURI;
         await chrome.storage.local.get(storageFormat, async (data) => {
             if (data.cachedURI) {
-                this.setState({newURI: data.cachedURI.generatedURI});
+                this.setState({uriValue: data.cachedURI.generatedURI});
                 await chrome.storage.local.remove(["cachedURI"]);
             }
         });
@@ -96,6 +96,17 @@ class CopyURIForm extends React.Component<CopyURIFormProps, CopyURIFormState> {
 
     handleClick(): void {
         // クリップボードコピー処理
+        if (!this.state.uriValue) {
+            ChromeRuntimeSendMS2BG(
+                "alertBG",
+                "message",
+                "Empty URI."
+            );
+            return;
+        }
+
+        (document.getElementById("copyForm")! as HTMLInputElement).select();
+        document.execCommand("copy");
     }
 
     render(): JSX.Element {
@@ -104,7 +115,7 @@ class CopyURIForm extends React.Component<CopyURIFormProps, CopyURIFormState> {
                 <input
                     type="text"
                     id="copyForm"
-                    value={this.state.newURI}
+                    value={this.state.uriValue}
                     placeholder="Generated URI will display here"
                     readOnly
                 ></input>
