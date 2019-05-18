@@ -1,0 +1,52 @@
+﻿body {
+    margin: 0px;
+    font-family: "Meiryo";
+}
+
+.popupContainer {
+    width: 500px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    border: 2px solid #2d5396;
+    border-radius: 5px 0px 5px 5px;
+}
+
+.forms {
+    margin: 10px 4vw;
+}
+.forms input {
+    z-index: 1;
+    width: 75vw;
+    height: 24px;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 100px;
+    padding: 0 30px 0 10px; /* ボタンのズラしの分だけテキストの右端もズラす */
+    border-style: none;
+    box-shadow: 2px 2px 0px #9ec1ff, 2px 2px 0px #2d5396 inset;
+}
+.forms input[type="text"]:focus {
+    outline: 0;
+}
+.forms button {
+    z-index: 5;
+    margin-left: -30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    outline: none;
+    background-color: #d5e5ff;
+    border-style: none;
+    border-radius: 100px;
+    padding: 0 15px;
+    box-shadow: 2px 2px 0px #2d5396, 1px 1px 0px #9ec1ff inset;
+}
+.forms button:active {
+    color: #eee;
+    background-color: #002463;
+    box-shadow: 2px 2px 0px #9ec1ff, 1px 1px 0px #2d5396 inset;
+}
