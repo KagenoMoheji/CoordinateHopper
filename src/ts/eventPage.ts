@@ -71,7 +71,7 @@ window.addEventListener(
                     hopper.scroll(scrollData);
                     // マーカーの描写
                     // マーカーの位置がサイトによってズレすぎなのでとりあえずパス！！！
-                    hopper.drawMarker(scrollData);
+                    // hopper.drawMarker(scrollData);
 
                     // リダイレクト終了にストレージクリア→複数回呼び出し防止
                     await chrome.storage.local.remove(["hopperInfo"]);

@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Coordinate_FragmentIdentifier_SearchApp",
-    "description": "(アプリの説明)",
+    "name": "CoordinateHopper",
+    "description": "You can get URL that take you to a location in a web page where the coordinate you clicked before!",
     "version": "1.0.0",
     "browser_action": {
         "default_icon": "images/icon16.png",

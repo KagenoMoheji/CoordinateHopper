@@ -1,18 +1,18 @@
-# chrome-extension_fragment-identifier_with_Coordinate
-クリックされた座標をフラグメント識別子に付与してURI生成・検索可能にするChrome拡張
+# CoordinateHopper
+ID属性によるフラグメント識別子を用意できない時もこのChrome拡張でフラグメント識別子を取得します．
+When you can't get a URL with a fragment identifier from an id attribute of HTML tag, you can get it by this chrome-extension.
 
-- Googleホームページからリダイレクトができない…(**ブラウザリダイレクトだから同ページでのリダイレクトができないのも含めて制限ありそう**)
-- Googleドライブのようにハッシュを付加できないらしいWebアプリがある(いや，Googleドライブで移動させるなんていらんと思うけど)．
+### Functions
+1. Webサイト内で(右)クリックした位置の座標から，フラグメント識別子を付与したURLを生成する．
+You can generate a URL with a fragment identifier based a coordinate which you clicked on a web page.
 
+2. 本アプリの入力フォームからURLを検索すると，座標フラグメント識別子を解析して1.でクリックした位置に自動でスクロールする．
+You can move web page and find the page is automatically scrolled to the location where you clicked before.
 
+### DEMO GIF
+![DEMO](https://github.com/KagenoMoheji/CoordinateHopper/blob/media/media/CoordinateHopper.gif)
 
+### Issues
+- Cannot redirect from Google home page.
+- There are some web pages that can not attach a fragment identifier for example,  Google Drive.
 
-- Chrome拡張のリサイズはできるか？
-    - リサイズでinput[text]の幅を動的に変更
-    - 幅だけリサイズするinputを設置して入力してもらうとか(placeholder="range=300~600"とかにして)
-
-- ブログ公開
-    - 開発時間：約48時間(6時間 * 4日 + 10時間 * 2日)
-    - スピーディに実装したのでストレージ部分をRxJSやReduxに移行することも検討する
-    - GithubにGIFをあげてブログに引用
-    - 無料の限定公開にしてブログでリンク公開
