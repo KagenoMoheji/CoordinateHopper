@@ -10,7 +10,15 @@ export class URIGenerator {
     constructor(data: ClickedInfo) {
         this.clickedX = data.clickedX;
         this.clickedY = data.clickedY;
-        this.currentURI = data.currentURI;
+        this.currentURI = this.checkHashExist(data.currentURI);
+    }
+
+    // eventPage.tsでもハッシュ除去しているが念の為
+    private checkHashExist(uri: string): string {
+        if (uri.match(/#/)) {
+            return uri.split("#")[0];
+        }
+        return uri;
     }
 
     private getURI(): string {
