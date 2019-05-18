@@ -20,7 +20,7 @@ chrome.contextMenus.create(
                     && data.clickedInfo.clickedY === 0
                     && !data.clickedInfo.currentURI
                 ) {
-                    alert('Failed in getting coordinate.\nTry again after reloading web page.');
+                    alert('Error: Failed in getting coordinate.\n          Try again after reloading web page.');
                 } else {
                     // Popup.tsxに生成したURIを渡す
                     const generator = new URIGenerator(data.clickedInfo);
@@ -44,7 +44,7 @@ chrome.runtime.onMessage.addListener(async (request: Request, sender, sendRespon
         case "uriInputted":
             if (request.input) {
                 if (!request.input.match(/(http|https|ftp):\/\/.+/)) {
-                    alert('Invalid input.\nInput URI "(http|https|ftp)://~".');
+                    alert('Error: Invalid input.\n          Input URI "(http|https|ftp)://~".');
                     return;
                 }
 

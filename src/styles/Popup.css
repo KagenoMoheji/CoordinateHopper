@@ -28,12 +28,16 @@
     border-style: none;
     box-shadow: 2px 2px 0px #9ec1ff, 2px 2px 0px #2d5396 inset;
 }
+.forms input[type="text"]:focus {
+    outline: 0;
+}
 .forms button {
     z-index: 5;
     margin-left: -30px;
     height: 30px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: bold;
     outline: none;
     background-color: #d5e5ff;
     border-style: none;
