@@ -51,6 +51,7 @@ export class SearchHopper {
         vMarker.setAttribute("id", "CEFIwC_vMarker");
         vMarker.setAttribute("style", `position: absolute; left: ${scrollData.width!}px; opacity: 0; width: 30; height: 100%; background-color: rgba(247,193,71,0.6); z-index:100;`);
 
+        const fader = new SmoothFade();
         switch (Object.keys(scrollData).length) {
             case 2:
                 // 縦横十字
@@ -59,7 +60,7 @@ export class SearchHopper {
                     document.body.firstElementChild
                 );
 
-                const fader = new SmoothFade();
+                // 縦もやろうと思ったがとりま横だけ
                 await fader.smoothFlash(hMarker, 3000);
                 hMarker.remove();
                 break;
@@ -70,7 +71,8 @@ export class SearchHopper {
                     document.body.firstElementChild
                 );
 
-                // hMarker.remove();
+                await fader.smoothFlash(hMarker, 3000);
+                hMarker.remove();
                 break;
             default:
                 break;
