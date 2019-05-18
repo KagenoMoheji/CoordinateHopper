@@ -27,26 +27,34 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
     }
 
     handleClick(): void {
-        // 入力された値を取得して |実装済み
-        // リンクかを判定して |実装済み
-        // リダイレクトして |実装済み
-        // リダイレクト完了を検出したら |実装済み
-        // ハッシュの位置までスクロールして |実装済み
-        // heightの位置一帯に横帯(または十字)の黄色マーカーみたいなのをフェードイン・フェードアウトさせる
-        let elm: HTMLElement | null = document.getElementById("searchForm");
-        if (elm) {
-            let val: string | null = elm.getAttribute("value");
-            if (val) {
-                // chrome.runtime.sendMessage(
-                //     {type: "uriInputted", input: val}
+        // let elm: HTMLElement | null = document.getElementById("searchForm");
+        // if (elm) {
+        //     let val: string | null = elm.getAttribute("value");
+        //     if (val) {
+        //         // chrome.runtime.sendMessage(
+        //         //     {type: "uriInputted", input: val}
+        //         // );
+                // ChromeRuntimeSendMS2BG(
+                //     "uriInputted",
+                //     "input",
+                //     this.state.uriValue
                 // );
-                ChromeRuntimeSendMS2BG(
-                    "uriInputted",
-                    "input",
-                    val
-                );
-            }
+        //     }
+        // }
+
+        if (!this.state.uriValue) {
+            ChromeRuntimeSendMS2BG(
+                "alertBG",
+                "message",
+                "Error: Empty URI."
+            );
+            return;
         }
+        ChromeRuntimeSendMS2BG(
+            "uriInputted",
+            "input",
+            this.state.uriValue
+        );
     }
 
     render(): JSX.Element {
@@ -100,7 +108,7 @@ class CopyURIForm extends React.Component<CopyURIFormProps, CopyURIFormState> {
             ChromeRuntimeSendMS2BG(
                 "alertBG",
                 "message",
-                "Empty URI."
+                "Error: Empty URI."
             );
             return;
         }
