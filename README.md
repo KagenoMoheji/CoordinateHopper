@@ -24,4 +24,5 @@ This chrome-extension analyzes fragment identifiers below.
 ### Issues
 - Cannot redirect from Google home page.
 - There are some web pages that can not attach a fragment identifier for example,  Google Drive.
+- Depending on a site, a scroll amount don't match the coordinate where you clicked before.
 
