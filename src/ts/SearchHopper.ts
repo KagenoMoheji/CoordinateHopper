@@ -45,34 +45,40 @@ export class SearchHopper {
 
     async drawMarker(scrollData: ScrollInfo): Promise<void> {
         let hMarker: HTMLElement = document.createElement("div"); // horizontal marker(横線)
-        hMarker.setAttribute("id", "CEFIwC_hMarker");
-        hMarker.setAttribute("style", `position: absolute; top: ${scrollData.height!/* + 170*//*window.pageYOffset*/}px; opacity: 0; width: 100%; height: 30px; background-color: rgba(247,193,71,0.6); z-index:100;`);
-        let vMarker = document.createElement("div"); // vertical marker(縦線)
-        vMarker.setAttribute("id", "CEFIwC_vMarker");
-        vMarker.setAttribute("style", `position: absolute; left: ${scrollData.width!}px; opacity: 0; width: 30; height: 100%; background-color: rgba(247,193,71,0.6); z-index:100;`);
-
+        let vMarker: HTMLElement = document.createElement("div"); // vertical marker(縦線)
         const fader = new SmoothFade();
+
         switch (Object.keys(scrollData).length) {
             case 2:
                 // 縦横十字
+                hMarker.setAttribute("id", "CEFIwC_hMarker");
+                hMarker.setAttribute("style", `position: absolute; top: ${scrollData.height!/* + 170*//*window.pageYOffset*/}px; opacity: 0; width: 100%; height: 30px; background-color: rgba(247,193,71,0.6); z-index:100;`);
+                // 縦もやろうと思ったがとりま横だけ
+                // vMarker.setAttribute("style", `position: absolute; left: ${scrollData.width!}px; opacity: 0; width: 30; height: 100%; background-color: rgba(247,193,71,0.6); z-index:100;`);
+
                 document.body.insertBefore(
                     hMarker,
                     document.body.firstElementChild
                 );
 
-                // 縦もやろうと思ったがとりま横だけ
-                await fader.smoothFlash(hMarker, 3000);
+                await fader.smoothFlash(hMarker, 3000); // fader.smoothFlash([hMarker, wMarker], 3000);
                 hMarker.remove();
+                // wMarker.remove();
                 break;
             case 1:
                 // 横だけ
-                document.body.insertBefore(
-                    hMarker,
-                    document.body.firstElementChild
-                );
+                if (scrollData.height) {
+                    hMarker.setAttribute("id", "CEFIwC_hMarker");
+                    hMarker.setAttribute("style", `position: absolute; top: ${scrollData.height!/* + 170*//*window.pageYOffset*/}px; opacity: 0; width: 100%; height: 30px; background-color: rgba(247,193,71,0.6); z-index:100;`);
 
-                await fader.smoothFlash(hMarker, 3000);
-                hMarker.remove();
+                    document.body.insertBefore(
+                        hMarker,
+                        document.body.firstElementChild
+                    );
+
+                    await fader.smoothFlash(hMarker, 3000);
+                    hMarker.remove();
+                }
                 break;
             default:
                 break;
