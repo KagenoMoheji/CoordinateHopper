@@ -9,6 +9,15 @@ You can generate a URL with a fragment identifier based a coordinate which you c
 2. 本アプリの入力フォームからURLを検索すると，座標フラグメント識別子を解析して1.でクリックした位置に自動でスクロールする．  
 You can move web page and find the page is automatically scrolled to the location where you clicked before.
 
+3. 以下のフラグメント識別子に対し解析する．  
+This chrome-extension analyzes fragment identifiers below.
+- (URI)#[width=(number)&&height=(number)]
+- (URI)#[height=(number)&&width=(number)]
+- (URI)#[height=(number)]
+- (URI)#[width=(number)]
+    - ただしこれは`height=0`とするので，現段階では通常リダイレクトと同等．  
+    However, this fragment identifier is the same as `height=0`, so it works only a redirecting.
+
 ### DEMO GIF
 ![DEMO](https://github.com/KagenoMoheji/CoordinateHopper/blob/media/media/CoordinateHopper.gif)
 
