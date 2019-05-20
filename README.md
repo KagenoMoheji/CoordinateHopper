@@ -26,3 +26,6 @@ This chrome-extension analyzes fragment identifiers below.
 - There are some web pages that can not attach a fragment identifier for example,  Google Drive.
 - Depending on a site, a scroll amount don't match the coordinate where you clicked before.
 
+### And more...
+- TypeScriptの一部のコードのコメントアウトは，私自身が参考にするためにあえて残してあります．  
+Some of commenting outs of code in TypeScript are remained because I want to refer again.
