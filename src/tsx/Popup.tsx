@@ -6,13 +6,15 @@ import {ENTER, StorageFormat, InitCachedURI} from "./../ts/types";
 interface SearchFormProps {}
 interface SearchFormState {
     uriValue: string;
+    willNewTabOpen: boolean;
 }
 class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
     constructor(props: SearchFormProps) {
         super(props);
 
         this.state = {
-            uriValue: ""
+            uriValue: "",
+            willNewTabOpen: false
         };
     }
 
@@ -23,6 +25,18 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
         if (eve.keyCode === ENTER) {
             // ボタンクリックと同じ処理をさせる
             this.handleClick();
+        }
+    }
+
+    handleIconClick(eve: React.MouseEvent<HTMLInputElement, MouseEvent>): void {
+        // アイコンの色を変える(面倒なので２つの画像を使ってる)
+        let icon: HTMLElement | null = document.querySelector("#newTabOpenIcon img");
+        if (eve.currentTarget.checked) {
+            icon!.setAttribute("src", "images/newWindowOpen_on.png");
+            this.setState({willNewTabOpen: true});
+        } else {
+            icon!.setAttribute("src", "images/newWindowOpen_off.png");
+            this.setState({willNewTabOpen: false});
         }
     }
 
@@ -51,9 +65,9 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
             return;
         }
         ChromeRuntimeSendMS2BG(
-            "uriInputted",
-            "input",
-            this.state.uriValue
+            "redirect",
+            "redirectInfo",
+            {uri: this.state.uriValue, willNewTabOpen: this.state.willNewTabOpen}
         );
     }
 
@@ -73,6 +87,19 @@ class SearchForm extends React.Component<SearchFormProps, SearchFormState> {
                 >
                     Go
                 </button>
+                <label id="newTabOpenIcon">
+                    <input type="checkbox" onClick={(eve) => {this.handleIconClick(eve); }} />
+                    <img src="images/newWindowOpen_off.png" />
+                    {/* <object type="image/svg+xml" data="images/newWindowOpen1.svg"></object> */}
+                    {/*
+                    【SVGファイルを扱う際のよく分からんところ．】
+                    ●objectタグで入れたとして，チェックボックスとズレてしまうやん…
+                    ●objectタグに対しCSSで"cursor:pointer"できないやん…
+                    ●objectタグに対して色変えにくいやん…
+                    →"svg > defs > style"内の".cls-1,.cls-2{fill:none;}.cls-2{stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:4px;}"の.cls-2{stroke}を変えれば良さそうなので，"componentDidMount(){window.addEventListener('load')}"で変更すれば良い？
+                    ●svgタグ使えって，訳わからんわあんなもん．グラフィックデザイナーに頼むわ
+                    */}
+                </label>
             </div>
         );
     }

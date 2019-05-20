@@ -36,14 +36,17 @@ chrome.contextMenus.create(
 // chrome.runtime.sendMessageを受け取る
 interface Request {
     type: string;
-    input?: string;
+    redirectInfo?: {
+        uri: string;
+        willNewTabOpen: boolean;
+    };
     message?: string;
 }
 chrome.runtime.onMessage.addListener(async (request: Request, sender, sendResponse) => {
     switch (request.type) {
-        case "uriInputted":
-            if (request.input) {
-                if (!request.input.match(/(http|https|ftp):\/\/.+/)) {
+        case "redirect":
+            if (request.redirectInfo) {
+                if (!request.redirectInfo.uri.match(/(http|https|ftp):\/\/.+/)) {
                     alert('Error: Invalid input.\n          Input URI "(http|https|ftp)://~".');
                     return;
                 }
@@ -67,8 +70,11 @@ chrome.runtime.onMessage.addListener(async (request: Request, sender, sendRespon
                 //     "uri",
                 //     request.input
                 // );
-                chrome.tabs.update({url: request.input}); // アクティブにしているタブを更新
-                // chrome.tabs.create({url: request.input}); // 新しくタブを作成
+                if (!request.redirectInfo.willNewTabOpen) {
+                    chrome.tabs.update({url: request.redirectInfo.uri}); // アクティブにしているタブを更新
+                } else {
+                    chrome.tabs.create({url: request.redirectInfo.uri}); // 新しくタブを作成
+                }
             }
             break;
         case "alertBG":

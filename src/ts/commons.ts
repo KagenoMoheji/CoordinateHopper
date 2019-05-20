@@ -32,7 +32,14 @@ export function BG2EventChromeTabsQuery(type: string, key: string, val: string) 
 
 // background.ts内で使うとダメで普通にalert使う．
 // eventPage→backgroundまたはTSX→backgroundのときに使う．
-export function ChromeRuntimeSendMS2BG(type: string, key: string, val: string) {
+export function ChromeRuntimeSendMS2BG(
+    type: string,
+    key: string,
+    val: string | { // この書き方は良くないな…．
+            uri: string;
+            willNewTabOpen: boolean;
+        }
+) {
     chrome.runtime.sendMessage(
         {
             type: type,

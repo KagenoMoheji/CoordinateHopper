@@ -5,7 +5,7 @@
 
 .popupContainer {
     width: 500px;
-    height: 100px;
+    height: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,7 +15,11 @@
 }
 
 .forms {
-    margin: 10px 4vw;
+    margin: 5px 4vw;
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 .forms input {
     z-index: 1;
@@ -50,3 +54,25 @@
     background-color: #002463;
     box-shadow: 2px 2px 0px #9ec1ff, 1px 1px 0px #2d5396 inset;
 }
+
+#newTabOpenIcon {
+    margin: 3px 0 0 10px;
+}
+#newTabOpenIcon input[type="checkbox"] {
+    display: none;
+}
+#newTabOpenIcon img {
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+}
+/* #newTabOpenIcon object {
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    width: 45px;
+    height: 45px;
+} */
