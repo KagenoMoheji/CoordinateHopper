@@ -62,11 +62,13 @@ chrome.runtime.onMessage.addListener(async (request: Request, sender, sendRespon
                     }
                 });
 
-                BG2EventChromeTabsQuery(
-                    "redirect",
-                    "uri",
-                    request.input
-                );
+                // BG2EventChromeTabsQuery(
+                //     "redirect",
+                //     "uri",
+                //     request.input
+                // );
+                chrome.tabs.update({url: request.input}); // アクティブにしているタブを更新
+                // chrome.tabs.create({url: request.input}); // 新しくタブを作成
             }
             break;
         case "alertBG":

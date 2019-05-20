@@ -34,17 +34,17 @@ chrome.runtime.onMessage.addListener((request: Request, sender, sendResponse) =>
         //         alert(request.message);
         //     }
         //     break;
-        case "redirect":
-            if (request.uri) {
-                location.href = request.uri;
-            } else {
-                ChromeRuntimeSendMS2BG(
-                    "alertBG",
-                    "message",
-                    "Error: Empty URI."
-                );
-            }
-            break;
+        // case "redirect":
+        //     if (request.uri) {
+        //         // location.href = request.uri;
+        //     } else {
+        //         ChromeRuntimeSendMS2BG(
+        //             "alertBG",
+        //             "message",
+        //             "Error: Empty URI."
+        //         );
+        //     }
+        //     break;
         default:
             break;
     }
