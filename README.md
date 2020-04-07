@@ -33,3 +33,6 @@ This chrome-extension analyzes fragment identifiers below.
 The Japanese description of this chrome-extension is written in blog of the above link.
 - TypeScriptの一部のコードのコメントアウトは，私自身が参考にするためにあえて残してあります．  
 Some of commenting outs of code in TypeScript are remained because I want to refer again.
+
+### LICENSE
+MIT LICENSE.
